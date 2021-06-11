@@ -132,3 +132,40 @@ PATH_PREFIX = "youtube/"
 
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 STATIC_URL = '/' + PATH_PREFIX + 'static/'
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "console": {
+            "format": u"%(asctime)s [%(levelname)-8s] [%(pathname)s:%(lineno)d] %(message)s",
+        },
+        "aws": {
+            "format": u"%(asctime)s [%(levelname)-8s] [%(pathname)s:%(lineno)d] %(message)s",
+            "datefmt": "%Y-%m-%d %H:%M:%S"
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'console',
+        }
+    },
+    "loggers": {
+        "": {
+            "level": "WARNING",
+            "handlers": ["console"],
+            "propagate": False,
+        },
+        "django.request": {
+            "handlers": ["console"],
+            "level": "DEBUG",
+            "propagate": False,
+        },
+        "django.server": {
+            "handlers": ["console"],
+            "level": "DEBUG",
+            "propagate": False,
+        },
+    },
+}
