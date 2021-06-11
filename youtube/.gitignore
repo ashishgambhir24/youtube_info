@@ -1,0 +1,12 @@
+*.swp
+*.pyc
+.DS_Store
+db.sqlite3
+dev.db
+env/
+src/vendor/bower/
+node_modules/
+static/
+build/
+.ipynb*
+*.ipynb
