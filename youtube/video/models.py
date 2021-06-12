@@ -22,22 +22,15 @@ class Video(models.Model):
     last_updated = models.DateTimeField(auto_now=True)
 
     def jsonify(self):
-        data = model_to_dict(self, exclude['video_id', 'etag', 'channel_id'])
+        data = model_to_dict(self, exclude=['video_id', 'etag', 'channel_id'])
         data['url'] = f'https://www.youtube.com/watch?v={self.video_id}'
         thumbnails_data = {}
         thumbnails = self.thumbnail_set.all()
-        for thumbnail in thumbernails:
+        for thumbnail in thumbnails:
             thumbnails_data.update(thumbnail.jsonify())
 
         data['thumbnails'] = thumbnails_data
-        # data['published_at'] = str(datetime.strptime(
-        #     self.published_at, "%Y-%m-%dT%H:%M:%SZ"
-        # ).replace(
-        #     tzinfo=pytz.UTC
-        # ).astimezone(
-        #     pytz.timezone("Asia/Calcutta")
-        # ))
-        data['published_at'] = str(self.published_at)
+        data['published_at'] = str(self.published_at.astimezone(pytz.timezone("Asia/Calcutta")))
         return data
 
 class Thumbnail(models.Model):
@@ -51,5 +44,5 @@ class Thumbnail(models.Model):
     height = models.IntegerField()
 
     def jsonify(self):
-        data = model_to_dict(self, exclude=['video', 'type'])
+        data = model_to_dict(self, exclude=['id', 'video', 'type'])
         return {self.type: data}
