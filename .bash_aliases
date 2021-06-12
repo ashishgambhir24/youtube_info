@@ -6,6 +6,7 @@ export YOUTUBE="$HOME/youtube"
 alias venv='. env/bin/activate'
 alias youtube='cd $YOUTUBE; venv'
 alias dc='docker-compose'
+alias container='docker exec -ti youtube_info_django_1 /bin/bash'
 dclogs(){
     dc logs --tail=100 --follow $@
 }

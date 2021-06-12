@@ -1,18 +1,28 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 import logging
+import time
+import random
 from video.youtube_apis import get_videos
 from video.models import Thumbnail, Video
+from youtube.celery import app
+from youtube.constants import YOUTUBE_APIKEYS, CRONJOB_INTEVAL
 from youtube.settings import LOGGING
 
 logging.config.dictConfig(LOGGING)
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
+@app.task
 def fetch_videos(published_after, topic):
-    APIKEY = 'AIzaSyB4bxiE-XVs377A1C-YPL90xxOVaOP1_fk'
+    APIKEY = random.choice(YOUTUBE_APIKEYS)
     next_page_token = None
     while True:
         api_resp = get_videos(published_after, topic, APIKEY, next_page_token)
+        if api_resp.status_code == 403:
+            logger.info(api_resp.json(), f'APIKEY: {APIKEY}', '❌❌❌❌❌❌❌❌')
+            APIKEY = random.choice(YOUTUBE_APIKEYS)
+            continue
+
         api_data = api_resp.json()
         videos_data = api_data['items']
         for video_data in videos_data:
@@ -54,3 +64,26 @@ def fetch_videos(published_after, topic):
             next_page_token = api_data['nextPageToken']
         else:
             break
+
+def datetime_to_str(dt):
+    return datetime.strftime(dt, "%Y-%m-%dT%H:%M:%SZ")
+
+@app.task
+def start_cronjob():
+    published_after = None
+    keyword = 'sport' # Here we specify topic of video to be fetched
+    while True:
+        try:
+            current_time = datetime.now()
+            if not published_after:
+                published_after = datetime_to_str(current_time - timedelta(seconds=CRONJOB_INTEVAL))
+
+            fetch_videos.apply_async([published_after, keyword])
+            published_after = datetime_to_str(current_time)
+            time.sleep(CRONJOB_INTEVAL)
+        except Exception as e:
+            print(e)
+            pass
+
+if __name__ == "cronjob":
+    start_cronjob.apply_async(countdown=30)

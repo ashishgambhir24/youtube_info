@@ -133,6 +133,17 @@ PATH_PREFIX = "youtube/"
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 STATIC_URL = '/' + PATH_PREFIX + 'static/'
 
+# Celery
+BROKER_URL = "redis://redis:6379"
+BROKER_TRANSPORT = "redis"
+CELERY_TIMEZONE = "Asia/Kolkata"
+CELERY_TASK_SERIALIZER = "json"
+CELERY_RESULT_SERIALIZER = "json"
+CELERY_ACCEPT_CONTENT = ["json"]
+CELERY_IMPORTS = [
+    'cronjob'
+]
+
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,

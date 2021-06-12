@@ -9,3 +9,17 @@ services:
             context: ./youtube
             dockerfile: Dockerfile.django
 
+    redis:
+        image: redis
+        restart: always
+
+    worker:
+        links:
+            - redis
+        depends_on:
+            - redis
+        volumes:
+            - ./youtube:/code
+        build:
+            context: ./youtube
+            dockerfile: Dockerfile.worker
