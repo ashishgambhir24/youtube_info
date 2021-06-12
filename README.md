@@ -1,7 +1,7 @@
 # Setup
 Clone this repo
 
-For every terminal, first source bash_aliases file to use command line shortcuts, using folowing command
+For every terminal, first source bash_aliases file to use command line shortcuts, using following command
 
 > source .bash_source
 
@@ -17,6 +17,8 @@ above command is a shortcut which is mentioned in .bash_aliases file. It could b
 or
 
 > dcrestart django worker
+
+This commond stops existing running container, removes its image, and build it again.
 
 similarly we can use following command to stop a container - 
 > dcstop
