@@ -1,5 +1,5 @@
 YOUTUBE_APIKEYS = [
-    'AIzaSyBfLtdnu8ThclQIa9qdehznqn-XYwFGRVw',
-    'AIzaSyB_gOBJIksa61_qpZnwv3IJ76WbIbVkLpQ'
+    'AIzaSyBly49OyMfM2AJWt9Mh7lUcI03GjeYDyn8',
+    'AIzaSyBKGvV58PMFBn2fcMkOfSljveEGcJpUtkA'
 ]
-CRONJOB_INTEVAL = 10
+CRONJOB_INTEVAL = 120
