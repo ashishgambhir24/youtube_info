@@ -3,7 +3,7 @@ Clone this repo
 
 For every terminal, first source bash_aliases file to use command line shortcuts, using following command
 
-> source .bash_source
+> source .bash_aliases
 
 After this first we need to turn on docker containers using command - 
 > dc up
